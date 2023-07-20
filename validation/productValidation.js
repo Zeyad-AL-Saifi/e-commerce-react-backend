@@ -8,7 +8,11 @@ exports.createProductValidation = [
         .isLength({ min: 3 })
         .withMessage('most be at least 3 chars')
         .notEmpty()
-        .withMessage('product required')
+        .withMessage('product required').custom((val, { req }) =>
+        {
+            req.body.slug = slugify(val);
+            return true;
+        })
     ,
     check('description')
         .notEmpty()
@@ -31,19 +35,13 @@ exports.createProductValidation = [
         .withMessage('product price most be number')
         .isLength({ max: 32 })
         .withMessage('To long price'),
-    body('name').custom((value, { req }) =>
-    {
-        req.body.slug = slugify(value);
-        return true;
-
-    }),
     check('priceAfterDescount')
         .optional()
         .isNumeric().withMessage('product priceAfterDescount must be a number')
         .toFloat()
         .custom((value, { req }) =>
         {
-            if (req.body.price < value)
+            if (req.body.price <= value)
             {
                 throw new Error('priceAfterDiscount must be lower then normal price');
             }
@@ -99,12 +97,12 @@ exports.createProductValidation = [
                     {
                         subCategoriesIdsINDB.push(ele._id.toString());
                     });
-                    const checker = values
-                        .every(v => subCategoriesIdsINDB
-                            .includes(v));
-                    if (!checker)
+                    const checker = (target, arr) => target.every((v) => arr.includes(v));
+                    if (!checker(values, subCategoriesIdsINDB))
                     {
-                        return Promise.reject(new Error('subcategories not belong to category '));
+                        return Promise.reject(
+                            new Error(`subcategories not belong to category`)
+                        );
                     }
 
                 }
@@ -130,8 +128,10 @@ exports.getProductValidation = [
 
 ];
 exports.updateProductValidation = [
-    check('id').isMongoId().withMessage('incalid ID format'),
-    body('name').custom((value, { req }) =>
+    check('id')
+        .isMongoId()
+        .withMessage('incalid ID format'),
+    body('title').custom((value, { req }) =>
     {
         req.body.slug = slugify(value);
         return true;

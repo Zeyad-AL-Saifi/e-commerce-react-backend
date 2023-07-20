@@ -1,4 +1,4 @@
-const { param, check } = require('express-validator');
+const { param, check, body } = require('express-validator');
 const { default: slugify } = require('slugify');
 
 
@@ -38,9 +38,7 @@ exports.updateSubCategoryRules = [
     param('id')
         .isMongoId()
         .withMessage('Invalid Subcategory id format'),
-    check("name").notEmpty().withMessage('SubCategory required')
-        .isLength({ min: 3 }).withMessage('Too short Subcategory name')
-        .isLength({ max: 32 }).withMessage('Too long Subcategory name')
+    body("name")
         .custom((value, { req }) =>
         {
             req.body.slug = slugify(value);

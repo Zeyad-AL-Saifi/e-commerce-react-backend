@@ -1,6 +1,33 @@
+const { v4: uuidv4 } = require('uuid');
+const sharp = require('sharp');
+const expressAsyncHandler = require('express-async-handler');
 const UserModel = require('../models/userModel');
 const Factory = require('../Api/ApiControllerFactory');
+const { uploadSingleImage } = require('../middlewares/uploadImageMiddlewere');
 
+
+// Upload single image
+exports.uploadUserImage = uploadSingleImage('profileImg');
+
+// Image processing
+exports.resizeImage = expressAsyncHandler(async (req, res, next) =>
+{
+    const filename = `user-${ uuidv4() }-${ Date.now() }.jpeg`;
+
+    if (req.file)
+    {
+        await sharp(req.file.buffer)
+            .resize(600, 600)
+            .toFormat('jpeg')
+            .jpeg({ quality: 95 })
+            .toFile(`uploads/users/${ filename }`);
+
+        // Save image into our db
+        req.body.profileImg = filename;
+    }
+
+    next();
+});
 /**
  * @desc Get all user
  * @route /api/v1/users
