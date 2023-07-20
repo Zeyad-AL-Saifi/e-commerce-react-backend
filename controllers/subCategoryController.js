@@ -3,8 +3,12 @@ const Factory = require('../Api/ApiControllerFactory');
 
 exports.setCategoryIdToBody = (req, res, next) =>
 {
-    if (!req.body.category) { req.body.category = req.params.categoryId; next(); };
+    if (!req.body.category)
+    {
+        req.body.category = req.params.categoryId;
 
+    };
+    next();
 };
 //nested route
 
@@ -14,9 +18,9 @@ exports.createFilterObj = (req, res, next) =>
     if (req.params.categoryId)
     {
         filterObjct = { category: req.params.categoryId };
-        req.filterObjct = filterObjct;
-        next();
-    }
+
+    } req.filterObjct = filterObjct;
+    next();
 };
 /**
  * @desc Get all Subcategories belong to category id

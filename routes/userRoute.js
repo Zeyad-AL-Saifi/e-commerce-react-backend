@@ -1,5 +1,5 @@
 const express = require('express');
-const { createUsers, deleteUsers, getAllUsers, getUserByID, updateUsers
+const { createUsers, deleteUsers, getAllUsers, getUserByID, updateUsers, uploadUserImage, resizeImage
 } = require('../controllers/userController');
 // const { validationMiddleware } = require('../middlewares/validationMiddleware');
 // const { getIDBrandRules,
@@ -19,12 +19,12 @@ router.get('/:id', getUserByID);
 
 
 //add new users
-router.post('/', createUsers);
+router.post('/', uploadUserImage, resizeImage, createUsers);
 
 
 
 //add new users
-router.put('/:id', updateUsers);
+router.put('/:id', uploadUserImage, resizeImage, updateUsers);
 
 
 

@@ -1,6 +1,10 @@
 const dotenv = require('dotenv');
 const express = require("express");
 const morgan = require('morgan');
+const path = require('path');
+
+const cors = require('cors');
+const compression = require('compression');
 
 
 const connectionDatabase = require('./config/db');
@@ -17,12 +21,25 @@ dotenv.config({ path: 'config.env' });
 connectionDatabase();
 
 
+// Enable other domains to access your application
+app.use(cors());
+app.options('*', cors());
+
+// compress all responses
+app.use(compression());
+
+
+
 //Middelwares
-app.use(express.json());
+app.use(express.json({ limit: '20kb' }));
+app.use(express.static(path.join(__dirname, 'uploads')));
+
 
 if (process.env.NODE_ENV === 'development')
 {
     app.use(morgan("dev"));
+    console.log(`mode: ${ process.env.NODE_ENV }`);
+
 }
 
 //router

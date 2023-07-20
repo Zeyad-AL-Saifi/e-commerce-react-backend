@@ -15,13 +15,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [ true, 'email required' ],
     },
-    phone: String,
-    profileImage: String,
     password: {
         type: String,
         required: [ true, 'password required' ],
         minlength: [ 8, 'To short password' ],
     },
+    phone: String,
+    image: String,
     role: {
         type: String,
         enum: [ 'user', 'admin' ],

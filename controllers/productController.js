@@ -55,8 +55,8 @@ exports.resizeProductImages = expressAsyncHandler(async (req, res, next) =>
             })
         );
 
-        next();
-    }
+
+    } next();
 });
 /**
  * @desc Get all products

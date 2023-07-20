@@ -1,7 +1,9 @@
 const express = require('express');
 const {
     createProduct, deleteProduct, getAllProducts, getProductByID
-    , updateProduct
+    , updateProduct,
+    uploadProductImages,
+    resizeProductImages
 } = require('../controllers/productController');
 const { validationMiddleware } = require('../middlewares/validationMiddleware');
 
@@ -21,12 +23,12 @@ router.get('/:id', getProductValidation, validationMiddleware, getProductByID);
 
 
 //add new category
-router.post('/', createProductValidation, validationMiddleware, createProduct);
+router.post('/', uploadProductImages, resizeProductImages, createProductValidation, validationMiddleware, createProduct);
 
 
 
 //add new category
-router.put('/:id', updateProductValidation, validationMiddleware, updateProduct);
+router.put('/:id', uploadProductImages, resizeProductImages, updateProductValidation, validationMiddleware, updateProduct);
 
 
 

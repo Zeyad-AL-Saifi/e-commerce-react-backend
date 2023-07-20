@@ -1,5 +1,5 @@
 const express = require('express');
-const { createCategory, getAllCategories, getCategoryByID, updateCategory, deleteCategory } = require('../controllers/categoryController');
+const { createCategory, getAllCategories, getCategoryByID, updateCategory, deleteCategory, uploadCategoryImage, resizeImage } = require('../controllers/categoryController');
 const { validationMiddleware } = require('../middlewares/validationMiddleware');
 const { getIDCategoryRules, createCategoryRules, updateCategoryRules, deleteIDCategoryRules } = require('../validation/categoryValidation');
 const createSubCategoryRoute = require('./subCategoryRoute');
@@ -19,12 +19,12 @@ router.use('/:categoryId/subcategories', createSubCategoryRoute);
 
 
 //add new category
-router.post('/', createCategoryRules, validationMiddleware, createCategory);
+router.post('/', uploadCategoryImage, resizeImage, createCategoryRules, validationMiddleware, createCategory);
 
 
 
 //add new category
-router.put('/:id', updateCategoryRules, validationMiddleware, updateCategory);
+router.put('/:id', uploadCategoryImage, resizeImage, updateCategoryRules, validationMiddleware, updateCategory);
 
 
 

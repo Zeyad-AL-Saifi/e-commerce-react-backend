@@ -69,7 +69,7 @@ exports.createProductValidation = [
                     return Promise.reject(
                         new Error(
                             `NO category for this id: ${ categoryId }`));
-                }
+                } return true;
             })
         ),
     check('subCategory')
@@ -85,7 +85,7 @@ exports.createProductValidation = [
                         return Promise.reject(
                             new Error(
                                 `Invalid subcategoriesId`));
-                    }
+                    } return true;
                 })
         ).custom((values, { req }) =>
             subCategoryModel
@@ -103,7 +103,7 @@ exports.createProductValidation = [
                         return Promise.reject(
                             new Error(`subcategories not belong to category`)
                         );
-                    }
+                    } return true;
 
                 }
                 )

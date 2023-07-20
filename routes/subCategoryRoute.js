@@ -2,6 +2,7 @@ const express = require('express');
 const { validationMiddleware } = require('../middlewares/validationMiddleware');
 const { getIDSubCategoryRules, createSubCategoryRules, updateSubCategoryRules, deleteIDSubCategoryRules } = require('../validation/subcategoryValidation');
 const { createFilterObj, setCategoryIdToBody, createSubCategory, deleteSubCategory, getAllSubCategories, getSubCategoryByID, updateSubCategory } = require('../controllers/subCategoryController');
+const { uploadCategoryImage } = require('../controllers/categoryController');
 
 
 //mergeParams: true ==>to access route or params belong to another resorses

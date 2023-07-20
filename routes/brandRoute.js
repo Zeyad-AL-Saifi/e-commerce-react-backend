@@ -1,5 +1,5 @@
 const express = require('express');
-const { createBrands, deleteBrands, getAllBrands, getBrandByID, updateBrands
+const { createBrands, deleteBrands, getAllBrands, getBrandByID, updateBrands, uploadBrandImage, resizeImage
 } = require('../controllers/brandController');
 const { validationMiddleware } = require('../middlewares/validationMiddleware');
 const { getIDBrandRules,
@@ -19,12 +19,12 @@ router.get('/:id', getIDBrandRules, validationMiddleware, getBrandByID);
 
 
 //add new brand
-router.post('/', createBrandRules, validationMiddleware, createBrands);
+router.post('/', uploadBrandImage, resizeImage, createBrandRules, validationMiddleware, createBrands);
 
 
 
 //add new brand
-router.put('/:id', updateBrandRules, validationMiddleware, updateBrands);
+router.put('/:id', uploadBrandImage, resizeImage, updateBrandRules, validationMiddleware, updateBrands);
 
 
 
