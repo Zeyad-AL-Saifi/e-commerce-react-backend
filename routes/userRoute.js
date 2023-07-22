@@ -1,11 +1,12 @@
 const express = require('express');
-const { createUsers, deleteUsers, getAllUsers, getUserByID, updateUsers, uploadUserImage, resizeImage
+const { createUsers, updatePassword, deleteUsers, getAllUsers, getUserByID, updateUsers, uploadUserImage, resizeImage
 } = require('../controllers/userController');
 const { validationMiddleware } = require('../middlewares/validationMiddleware');
 const { getIDUserRules,
     createUserRules,
     updateUserRules,
-    deleteIDUserRules } = require('../validation/userValidation');
+    deleteIDUserRules,
+    changeUserPasswordRules } = require('../validation/userValidation');
 
 
 const router = express.Router();
@@ -25,6 +26,7 @@ router.post('/', uploadUserImage, resizeImage, createUserRules, validationMiddle
 
 //add new users
 router.put('/:id', uploadUserImage, resizeImage, updateUserRules, validationMiddleware, updateUsers);
+router.put("/changePassword/:id", changeUserPasswordRules, validationMiddleware, updatePassword);
 
 
 

@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { default: slugify } = require('slugify');
 const UserModel = require('../models/userModel');
 
-exports.createUserRules = [
+exports.signupRules = [
     check("name")
         .notEmpty()
         .withMessage('User required')
@@ -22,19 +22,11 @@ exports.createUserRules = [
         .withMessage("invalid email address")
         .custom((value) =>
             UserModel.findOne({ email: value }).then((user) =>
-            {
-                if (user)
-                {
-                    return Promise.reject(new Error('E-mail already in user'));
-                }
-            })
-        ),
-
+            { if (user) { return Promise.reject(new Error('E-mail already in user')); } })),
     check('passwordConfirm')
         .notEmpty()
-        .withMessage('password confirm is required')
+        .withMessage('password confirm is required'),
 
-    ,
     // }).withMessage('invalid email address'),
     check("password")
         .notEmpty()
@@ -49,15 +41,6 @@ exports.createUserRules = [
             }
             return true;
         })
-    ,
-
-    check('image').optional(),
-    check('role').optional(),
-
-    check('phone').
-        optional(),
-    // // .isMobilePhone([ "ar-JO,en-JO" ])
-    // .withMessage('invalid phone number only accepted Jordan number')
 ];
 
 exports.updateUserRules = [

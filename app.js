@@ -48,6 +48,7 @@ app.use("/api/v1/subcategories", require('./routes/subCategoryRoute'));
 app.use("/api/v1/brands", require('./routes/brandRoute'));
 app.use("/api/v1/products", require('./routes/productRoute'));
 app.use("/api/v1/users", require('./routes/userRoute'));
+app.use("/api/v1/auth", require('./routes/authRoute'));
 
 app.all('*', (req, res, next) =>
 {

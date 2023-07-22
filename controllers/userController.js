@@ -1,10 +1,11 @@
 const { v4: uuidv4 } = require('uuid');
 const sharp = require('sharp');
 const expressAsyncHandler = require('express-async-handler');
+const bcrypt = require("bcryptjs");
 const UserModel = require('../models/userModel');
 const Factory = require('../Api/ApiControllerFactory');
 const { uploadSingleImage } = require('../middlewares/uploadImageMiddlewere');
-
+const ApiError = require('../utils/apiError');
 
 // Upload single image
 exports.uploadUserImage = uploadSingleImage('image');
@@ -61,10 +62,46 @@ exports.createUsers = Factory.createAPI(UserModel);
  * @method PUT
  * @access private
  */
-exports.updateUsers = Factory.updateAPI(UserModel);
 
+exports.updateUsers = expressAsyncHandler(async (req, res, next) =>
+{
+    const document = await UserModel.findByIdAndUpdate(
+        req.params.id,
+        {
+            name: req.body.name,
+            slug: req.body.slug,
+            phone: req.body.phone,
+            email: req.body.email,
+            image: req.body.image,
+            role: req.body.role,
 
+        },
+        { new: true });
+    if (!document)
+    {
+        return next(new ApiError(`No category for this id ${ req.params.id }`, 404));
+    }
+    res.status(200).json({ message: "updated sccessful", data: document });
 
+});
+
+//update password
+exports.updatePassword = expressAsyncHandler(async (req, res, next) =>
+{
+    const document = await UserModel.findByIdAndUpdate(
+        req.params.id,
+        {
+            password: await bcrypt.hash(req.body.password, 12),
+
+        },
+        { new: true });
+    if (!document)
+    {
+        return next(new ApiError(`No category for this id ${ req.params.id }`, 404));
+    }
+    res.status(200).json({ message: "updated sccessful", data: document });
+
+});
 
 
 /**
