@@ -7,7 +7,7 @@ const { uploadSingleImage } = require('../middlewares/uploadImageMiddlewere');
 
 
 // Upload single image
-exports.uploadUserImage = uploadSingleImage('profileImg');
+exports.uploadUserImage = uploadSingleImage('image');
 
 // Image processing
 exports.resizeImage = expressAsyncHandler(async (req, res, next) =>
@@ -23,7 +23,7 @@ exports.resizeImage = expressAsyncHandler(async (req, res, next) =>
             .toFile(`uploads/users/${ filename }`);
 
         // Save image into our db
-        req.body.profileImg = filename;
+        req.body.image = filename;
     }
 
     next();

@@ -43,7 +43,7 @@ exports.getByIdAPI = (Model) => asyncHandler(async (req, res, next) =>
     const document = await Model.findById(id);
     if (!document)
     {
-        return next(new ApiError(`No Brands for this id ${ id }`, 404));
+        return next(new ApiError(`No record for this id ${ id }`, 404));
     }
     res.status(200).json({ data: document });
 });

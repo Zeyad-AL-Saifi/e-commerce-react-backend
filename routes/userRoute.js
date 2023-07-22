@@ -1,11 +1,11 @@
 const express = require('express');
 const { createUsers, deleteUsers, getAllUsers, getUserByID, updateUsers, uploadUserImage, resizeImage
 } = require('../controllers/userController');
-// const { validationMiddleware } = require('../middlewares/validationMiddleware');
-// const { getIDBrandRules,
-//     createBrandRules,
-//     updateBrandRules,
-//     deleteIDBrandRules } = require('../validation/brandValidation');
+const { validationMiddleware } = require('../middlewares/validationMiddleware');
+const { getIDUserRules,
+    createUserRules,
+    updateUserRules,
+    deleteIDUserRules } = require('../validation/userValidation');
 
 
 const router = express.Router();
@@ -15,21 +15,21 @@ router.get('/', getAllUsers);
 
 
 //get users by id
-router.get('/:id', getUserByID);
+router.get('/:id', getIDUserRules, validationMiddleware, getUserByID);
 
 
 //add new users
-router.post('/', uploadUserImage, resizeImage, createUsers);
-
-
-
-//add new users
-router.put('/:id', uploadUserImage, resizeImage, updateUsers);
+router.post('/', uploadUserImage, resizeImage, createUserRules, validationMiddleware, createUsers);
 
 
 
 //add new users
-router.delete('/:id', deleteUsers);
+router.put('/:id', uploadUserImage, resizeImage, updateUserRules, validationMiddleware, updateUsers);
+
+
+
+//add new users
+router.delete('/:id', deleteIDUserRules, validationMiddleware, deleteUsers);
 
 
 
