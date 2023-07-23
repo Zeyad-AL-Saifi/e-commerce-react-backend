@@ -7,6 +7,7 @@ const cors = require('cors');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 
+const ExpressMongoSanitize = require('express-mongo-sanitize');
 const connectionDatabase = require('./config/db');
 const app = require("./config/server");
 const ApiError = require('./utils/apiError');
@@ -49,8 +50,11 @@ const limiter = rateLimit({
 });
 app.use("/app", limiter);//the router you need to protected it
 
+//remove the $ and anything not normal from JSON requist query
+app.use(ExpressMongoSanitize());
+
 //Prevent HTTP Parameter Pollution
-app.use(hpp());
+app.use(hpp({ whitelist: [ 'price', 'sold', 'quantity', 'ratingQuantity' ] }));//{ whitelist: ['price'] }:all thing exept that
 
 
 //router
