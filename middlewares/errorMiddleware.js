@@ -1,3 +1,4 @@
+const ApiError = require("../utils/apiError");
 
 const sendErrorforDev = (err, res) =>
 {
@@ -17,6 +18,9 @@ const sendErrorforProduction = (err, res) =>
     });
 };
 
+const handleJwtInvalidToken = () => new ApiError("Invalid token ,please login again");
+const handleJwtExpired = () => new ApiError("Expired token ,please login again");
+
 const errorMiddleware = (err, req, res, next) =>
 {
     err.statusCode = err.statusCode || 500;
@@ -26,6 +30,8 @@ const errorMiddleware = (err, req, res, next) =>
         sendErrorforDev(err, res);
     } else
     {
+        if (err.name === 'JsonWebTokenError') err = handleJwtInvalidToken();
+        if (err.name === 'TokenExpiredError') err = handleJwtExpired();
         sendErrorforProduction(err, res);
     }
 };

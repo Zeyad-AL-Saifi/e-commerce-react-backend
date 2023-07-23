@@ -29,6 +29,8 @@ exports.resizeImage = expressAsyncHandler(async (req, res, next) =>
 
     next();
 });
+
+
 /**
  * @desc Get all categories
  * @route /api/v1/categories

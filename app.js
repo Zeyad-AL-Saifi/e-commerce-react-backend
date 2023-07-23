@@ -31,7 +31,7 @@ app.use(compression());
 
 
 //Middelwares
-app.use(express.json({ limit: '20kb' }));
+app.use(express.json({ limit: '20kb' })); //this limit for security (set request size limit)
 app.use(express.static(path.join(__dirname, 'uploads')));
 
 

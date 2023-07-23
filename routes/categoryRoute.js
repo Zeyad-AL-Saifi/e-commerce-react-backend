@@ -4,6 +4,8 @@ const { validationMiddleware } = require('../middlewares/validationMiddleware');
 const { getIDCategoryRules, createCategoryRules, updateCategoryRules, deleteIDCategoryRules } = require('../validation/categoryValidation');
 const createSubCategoryRoute = require('./subCategoryRoute');
 
+const authController = require('../controllers/authController');
+
 const router = express.Router();
 
 //get all categories
@@ -19,7 +21,13 @@ router.use('/:categoryId/subcategories', createSubCategoryRoute);
 
 
 //add new category
-router.post('/', uploadCategoryImage, resizeImage, createCategoryRules, validationMiddleware, createCategory);
+router.post('/',
+    authController.auth,
+    uploadCategoryImage,
+    resizeImage,
+    createCategoryRules,
+    validationMiddleware,
+    createCategory);
 
 
 
