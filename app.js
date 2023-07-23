@@ -5,7 +5,7 @@ const path = require('path');
 
 const cors = require('cors');
 const compression = require('compression');
-
+const rateLimit = require('express-rate-limit');
 
 const connectionDatabase = require('./config/db');
 const app = require("./config/server");
@@ -41,6 +41,13 @@ if (process.env.NODE_ENV === 'development')
     console.log(`mode: ${ process.env.NODE_ENV }`);
 
 }
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,//15 is the time 
+    max: 100,
+    message: 'Too many accounts created from this IP,please try aagian after an hour'
+});
+app.use("/app", limiter);//the router you need to protected it 
 
 //router
 app.use("/api/v1/categories", require('./routes/categoryRoute'));
