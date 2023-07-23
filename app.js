@@ -2,7 +2,7 @@ const dotenv = require('dotenv');
 const express = require("express");
 const morgan = require('morgan');
 const path = require('path');
-
+const hpp = require('hpp');
 const cors = require('cors');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
@@ -47,7 +47,11 @@ const limiter = rateLimit({
     max: 100,
     message: 'Too many accounts created from this IP,please try aagian after an hour'
 });
-app.use("/app", limiter);//the router you need to protected it 
+app.use("/app", limiter);//the router you need to protected it
+
+//Prevent HTTP Parameter Pollution
+app.use(hpp());
+
 
 //router
 app.use("/api/v1/categories", require('./routes/categoryRoute'));
